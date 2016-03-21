@@ -1,6 +1,9 @@
-(ns hop.core)
+(ns hop.core
+  (:require [clojure.string :as str]
+            [clojure.java.io :as io]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn- absolute-path [path]
+  (.getAbsolutePath (io/file path)))
+
+(defn classpath [{:keys [directories]}]
+  (str/join java.io.File/pathSeparator (map absolute-path directories)))
