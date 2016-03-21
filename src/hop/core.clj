@@ -24,4 +24,4 @@
        (str/join java.io.File/pathSeparator)))
 
 (defn script [{:keys [main] :as project}]
-  (str "java -cp '" (classpath project) "' " main))
+  (str "java -cp '" (classpath project) "' clojure.main -m '" main "'"))
