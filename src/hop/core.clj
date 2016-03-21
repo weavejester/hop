@@ -1,5 +1,6 @@
 (ns hop.core
   (:require [cemerick.pomegranate.aether :as aether]
+            [clojure.edn :as edn]
             [clojure.string :as str]
             [clojure.java.io :as io]))
 
@@ -25,3 +26,6 @@
 
 (defn script [{:keys [main] :as project}]
   (str "java -cp '" (classpath project) "' clojure.main -m '" main "'"))
+
+(defn -main [& args]
+  (println (script (edn/read-string (slurp "project.edn")))))
