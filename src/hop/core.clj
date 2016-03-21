@@ -1,4 +1,5 @@
 (ns hop.core
+  (:gen-class)
   (:require [cemerick.pomegranate.aether :as aether]
             [clojure.edn :as edn]
             [clojure.string :as str]
