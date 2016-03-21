@@ -22,3 +22,6 @@
 (defn classpath [project]
   (->> (concat (classpath-dirs project) (classpath-deps project))
        (str/join java.io.File/pathSeparator)))
+
+(defn script [{:keys [main] :as project}]
+  (str "java -cp '" (classpath project) "' " main))
