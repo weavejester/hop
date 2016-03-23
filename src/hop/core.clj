@@ -11,7 +11,10 @@
   (merge aether/maven-central {"clojars" "http://clojars.org/repo"}))
 
 (def default-build
-  {:repositories default-repositories})
+  {:repositories default-repositories
+   :jvm-opts     ["-XX:+TieredCompilation"
+                  "-XX:TieredStopAtLevel=1"
+                  "-XX:-OmitStackTraceInFastThrow"]})
 
 (defn- absolute-path [path]
   (.getAbsolutePath (io/file path)))
@@ -34,11 +37,16 @@
   (for [[name task] (:tasks project)]
     (meta-merge (dissoc project :tasks) {:name name} task)))
 
+(defn- java-command [task]
+  (str "java " (str/join " " (:jvm-opts task))
+       " -cp " (pr-str (classpath task))
+       " clojure.main -m " (pr-str (:main task))))
+
 (defn print-script [project]
   (println "case $1 in")
   (doseq [task (tasks project)]
     (println (str (:name task) ")"))
-    (println "  java -cp" (pr-str (classpath task)) "clojure.main -m" (pr-str (:main task)))
+    (println "  " (java-command task))
     (println "  ;;"))
   (println "esac"))
 
