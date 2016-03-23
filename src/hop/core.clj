@@ -34,22 +34,22 @@
 (defn- classpath-deps [{:keys [dependencies repositories]}]
   (resolve-deps dependencies repositories))
 
-(defn classpath [project]
-  (->> (concat (classpath-dirs project) (classpath-deps project))
+(defn classpath [build]
+  (->> (concat (classpath-dirs build) (classpath-deps build))
        (str/join java.io.File/pathSeparator)))
 
-(defn tasks [project]
-  (for [[name task] (:tasks project)]
-    (meta-merge (dissoc project :tasks) {:name name} task)))
+(defn tasks [build]
+  (for [[name task] (:tasks build)]
+    (meta-merge (dissoc build :tasks) {:name name} task)))
 
 (defn- java-command [task]
   (str "java " (str/join " " (:jvm-opts task))
        " -cp " (pr-str (classpath task))
        " clojure.main -m " (pr-str (:main task))))
 
-(defn print-script [project]
+(defn print-script [build]
   (println "case $1 in")
-  (doseq [task (tasks project)]
+  (doseq [task (tasks build)]
     (println (str (:name task) ")"))
     (println "  " (java-command task) "$@")
     (println "  ;;"))
