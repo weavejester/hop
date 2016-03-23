@@ -1,6 +1,7 @@
 (ns hop.core
   (:gen-class)
-  (:require [cemerick.pomegranate.aether :as aether]
+  (:require [cemerick.pomegranate :as pomegranate]
+            [cemerick.pomegranate.aether :as aether]
             [clojure.string :as str]
             [clojure.java.io :as io]
             [meta-merge.core :refer [meta-merge]]))
@@ -62,11 +63,17 @@
     (println "  ;;"))
   (println "esac"))
 
+(defn load-plugins [{:keys [plugins repositories]}]
+  (pomegranate/add-dependencies
+   :coordinates  plugins
+   :repositories repositories))
+
 (defn- require-and-resolve [sym]
   (require (symbol (namespace sym)))
   (var-get (resolve sym)))
 
 (defn apply-middleware [{:keys [middleware] :as build}]
+  (load-plugins build)
   (->> middleware
        (map require-and-resolve)
        (reduce (fn [m f] (f m)) build)))
