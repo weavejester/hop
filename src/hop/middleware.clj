@@ -3,7 +3,11 @@
 (defn- add-directories [build dirs]
   (update build :directories (fnil into []) dirs))
 
-(defn add-classpath-dirs [build]
-  (add-directories build (concat (:source-paths build)
-                                 (:resource-paths build)
-                                 (:test-paths build))))
+(defn source-paths [build]
+  (add-directories build (:source-paths build)))
+
+(defn resource-paths [build]
+  (add-directories build (:resource-paths build)))
+
+(defn test-paths [build]
+  (add-directories build (:test-paths build)))

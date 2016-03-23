@@ -12,7 +12,9 @@
   (merge aether/maven-central {"clojars" "http://clojars.org/repo"}))
 
 (def default-middleware
-  '[hop.middleware/add-classpath-dirs])
+  '[hop.middleware/source-paths
+    hop.middleware/resource-paths
+    hop.middleware/test-paths])
 
 (def default-jvm-opts
   ["-XX:+TieredCompilation"
