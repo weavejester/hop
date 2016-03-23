@@ -1,3 +1,17 @@
 #!/usr/bin/env bash
 
-java -jar target/hop.jar
+CACHE_PATH="$HOME/.hop/cache"
+
+mkdir -p "$CACHE_PATH"
+
+BUILD_FILE="build.clj"
+
+CACHE_KEY=`shasum $BUILD_FILE | cut -f 1 -d ' '`
+
+CACHE_FILE="$CACHE_PATH/$CACHE_KEY.sh"
+
+if [ ! -f "$CACHE_FILE" ]; then
+    java -jar target/hop.jar > "$CACHE_FILE"
+fi
+
+source "$CACHE_FILE"
