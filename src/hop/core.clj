@@ -10,11 +10,18 @@
 (def default-repositories
   (merge aether/maven-central {"clojars" "http://clojars.org/repo"}))
 
+(def default-middleware
+  '[hop.middleware/add-classpath-dirs])
+
+(def default-jvm-opts
+  ["-XX:+TieredCompilation"
+   "-XX:TieredStopAtLevel=1"
+   "-XX:-OmitStackTraceInFastThrow"])
+
 (def default-build
   {:repositories default-repositories
-   :jvm-opts     ["-XX:+TieredCompilation"
-                  "-XX:TieredStopAtLevel=1"
-                  "-XX:-OmitStackTraceInFastThrow"]})
+   :middleware   default-middleware
+   :jvm-opts     default-jvm-opts})
 
 (defn- absolute-path [path]
   (.getAbsolutePath (io/file path)))
@@ -55,8 +62,20 @@
     (println "  ;;"))
   (println "esac"))
 
+(defn- require-and-resolve [sym]
+  (require (symbol (namespace sym)))
+  (var-get (resolve sym)))
+
+(defn apply-middleware [{:keys [middleware] :as build}]
+  (->> middleware
+       (map require-and-resolve)
+       (reduce (fn [m f] (f m)) build)))
+
 (defn read-buildfile []
-  (->> buildfile slurp read-string (meta-merge default-build)))
+  (-> buildfile slurp read-string))
 
 (defn -main [& args]
-  (print-script (read-buildfile)))
+  (->> (read-buildfile)
+       (meta-merge default-build)
+       (apply-middleware)
+       (print-script)))
