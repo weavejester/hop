@@ -22,12 +22,17 @@
 (defn- classpath-dirs [{:keys [directories]}]
   (map absolute-path directories))
 
+(def ^:private resolve-deps
+  (memoize
+   (fn [dependencies repositories]
+     (when dependencies
+       (aether/dependency-files
+        (aether/resolve-dependencies
+         :coordinates  dependencies
+         :repositories repositories))))))
+
 (defn- classpath-deps [{:keys [dependencies repositories]}]
-  (when dependencies
-    (aether/dependency-files
-     (aether/resolve-dependencies
-      :coordinates  dependencies
-      :repositories repositories))))
+  (resolve-deps dependencies repositories))
 
 (defn classpath [project]
   (->> (concat (classpath-dirs project) (classpath-deps project))
