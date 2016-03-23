@@ -30,11 +30,20 @@
   (->> (concat (classpath-dirs project) (classpath-deps project))
        (str/join java.io.File/pathSeparator)))
 
-(defn script [{:keys [main] :as project}]
-  (str "java -cp '" (classpath project) "' clojure.main -m '" main "'"))
+(defn tasks [project]
+  (for [[name task] (:tasks project)]
+    (meta-merge (dissoc project :tasks) {:name name} task)))
+
+(defn print-script [project]
+  (println "case $1 in")
+  (doseq [task (tasks project)]
+    (println (str (:name task) ")"))
+    (println (str "  java -cp '" (classpath task) "' clojure.main -m '" (:main task) "'"))
+    (println "  ;;"))
+  (println "esac"))
 
 (defn read-buildfile []
   (->> buildfile slurp read-string (meta-merge default-build)))
 
 (defn -main [& args]
-  (println (script (read-buildfile))))
+  (print-script (read-buildfile)))
