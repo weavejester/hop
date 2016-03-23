@@ -38,7 +38,7 @@
   (println "case $1 in")
   (doseq [task (tasks project)]
     (println (str (:name task) ")"))
-    (println (str "  java -cp '" (classpath task) "' clojure.main -m '" (:main task) "'"))
+    (println "  java -cp" (pr-str (classpath task)) "clojure.main -m" (pr-str (:main task)))
     (println "  ;;"))
   (println "esac"))
 
