@@ -16,7 +16,9 @@ JAVA_CMD=${JAVA_CMD:-"java"}
 HOP_JVM_OPTS="${HOP_JVM_OPTS-"-XX:+TieredCompilation -XX:TieredStopAtLevel=1"}"
 
 if [ ! -f "$CACHE_FILE" ]; then
-    $JAVA_CMD $HOP_JVM_OPTS -jar "$HOP_JAR" > "$CACHE_FILE"
+    $JAVA_CMD $HOP_JVM_OPTS -jar "$HOP_JAR" > "$CACHE_FILE" || rm "$CACHE_FILE"
 fi
 
-source "$CACHE_FILE"
+if [ -f "$CACHE_FILE" ]; then
+    source "$CACHE_FILE"
+fi
