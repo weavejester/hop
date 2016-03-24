@@ -57,7 +57,7 @@
     (meta-merge (dissoc build :tasks) {:name name} task)))
 
 (defn- java-command [task]
-  (str "java " (str/join " " (:jvm-opts task))
+  (str "$JAVA_CMD " (str/join " " (:jvm-opts task))
        " -cp " (pr-str (classpath task))
        " clojure.main -m " (pr-str (:main task))))
 
