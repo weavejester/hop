@@ -56,10 +56,16 @@
   (for [[name task] (:tasks build)]
     (meta-merge (dissoc build :tasks) {:name name} task)))
 
+(defn- arglist [args]
+  (if (seq args)
+    (str " " (str/join " " (map pr-str args)))
+    ""))
+
 (defn- java-command [task]
   (str "$JAVA_CMD " (str/join " " (:jvm-opts task))
        " -cp " (pr-str (classpath task))
-       " clojure.main -m " (pr-str (:main task))))
+       " clojure.main -m " (pr-str (:main task))
+       (arglist (:args task))))
 
 (defn print-script [build]
   (println "case $1 in")

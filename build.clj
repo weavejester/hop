@@ -4,4 +4,5 @@
                 [meta-merge "0.1.1"]
                 [leiningen "2.6.1"]]
  :tasks {"refresh" {:main hop.core}
-         "lein"    {:main hop.leiningen}}}
+         "lein"    {:main hop.leiningen
+                    :args ["version"]}}}
