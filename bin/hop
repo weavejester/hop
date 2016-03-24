@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
 
-CACHE_PATH="$HOME/.hop/cache"
+BUILD_FILE="build.clj"
+
+HOP_HOME="${HOP_HOME:-"$HOME/.hop"}"
+HOP_JAR="target/hop.jar"
+
+CACHE_PATH="$HOP_HOME/cache"
+CACHE_KEY=`shasum $BUILD_FILE | cut -f 1 -d ' '`
+CACHE_FILE="$CACHE_PATH/$CACHE_KEY.sh"
 
 mkdir -p "$CACHE_PATH"
 
-BUILD_FILE="build.clj"
+JAVA_CMD=${JAVA_CMD:-"java"}
 
-CACHE_KEY=`shasum $BUILD_FILE | cut -f 1 -d ' '`
-
-CACHE_FILE="$CACHE_PATH/$CACHE_KEY.sh"
+HOP_JVM_OPTS="${HOP_JVM_OPTS-"-XX:+TieredCompilation -XX:TieredStopAtLevel=1"}"
 
 if [ ! -f "$CACHE_FILE" ]; then
-    java -jar target/hop.jar > "$CACHE_FILE"
+    $JAVA_CMD $HOP_JVM_OPTS -jar "$HOP_JAR" > "$CACHE_FILE"
 fi
 
 source "$CACHE_FILE"
