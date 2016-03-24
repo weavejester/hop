@@ -65,6 +65,7 @@
   (println "case $1 in")
   (doseq [task (tasks build)]
     (println (str (:name task) ")"))
+    (println "  shift")
     (println "  " (java-command task) "$@")
     (println "  ;;"))
   (println "esac"))
