@@ -21,10 +21,14 @@
    "-XX:TieredStopAtLevel=1"
    "-XX:-OmitStackTraceInFastThrow"])
 
+(def default-tasks
+  '{"version" {:main hop.version}})
+
 (def default-build
   {:repositories default-repositories
    :middleware   default-middleware
-   :jvm-opts     default-jvm-opts})
+   :jvm-opts     default-jvm-opts
+   :tasks        default-tasks})
 
 (defn- absolute-path [path]
   (.getAbsolutePath (io/file path)))
