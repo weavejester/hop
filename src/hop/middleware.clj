@@ -9,7 +9,7 @@
   (map-vals (partial meta-merge options) tasks))
 
 (defn global-build-options [build]
-  (update-tasks build (partial meta-merge (dissoc build :tasks))))
+  (update-tasks build (partial meta-merge (dissoc build :middleware :tasks))))
 
 (defn- add-directories [build dirs]
   (update build :directories (fnil into []) dirs))
