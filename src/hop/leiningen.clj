@@ -10,7 +10,7 @@
 (defn- lein-project [build]
   (-> build
       (assoc :root root-path, :plugins [], :eval-in-leiningen true)
-      (dissoc :directories, :main, :args :repositories)))
+      (dissoc :args :directories :main :repositories)))
 
 (defn -main [build & args]
   (let [project (project/init-project (lein-project (read-string build)))]
