@@ -73,6 +73,9 @@
     (println "  shift")
     (println "  " (java-command task) "$@")
     (println "  ;;"))
+  (println "*)")
+  (println "  echo \"No such task: $1\"")
+  (println "  ;;")
   (println "esac"))
 
 (defn load-plugins [{:keys [plugins repositories]}]
