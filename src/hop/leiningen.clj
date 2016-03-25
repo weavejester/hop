@@ -4,9 +4,12 @@
             [leiningen.core.main :as main]
             [leiningen.core.project :as project]))
 
+(def root-path
+  (.getAbsolutePath (io/file ".")))
+
 (defn- lein-project [build]
   (-> build
-      (assoc :root (io/file "."), :plugins [], :eval-in-leiningen true)
+      (assoc :root root-path, :plugins [], :eval-in-leiningen true)
       (dissoc :directories, :main, :args :repositories)))
 
 (defn -main [build & args]
