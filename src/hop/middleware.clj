@@ -23,8 +23,10 @@
 (defn test-paths [build]
   (update-tasks build add-directories (:test-paths build)))
 
-(defn- replace-build-argument [task]
-  (update task :args (partial mapv #(if (= % '~build) (pr-str task) %))))
+(defn- replace-build-arguments [build task]
+  (let [mappings {'~build (pr-str build)
+                  '~task  (pr-str task)}]
+    (update task :args (partial mapv #(mappings % %)))))
 
 (defn build-arguments [build]
-  (update build :tasks (partial map-vals replace-build-argument)))
+  (update build :tasks (partial map-vals (partial replace-build-arguments build))))

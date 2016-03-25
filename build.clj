@@ -8,4 +8,4 @@
                 [medley "0.7.3"]
                 [leiningen "2.6.1"]]
  :tasks {"refresh" {:main hop.core}
-         "lein"    {:main hop.leiningen, :args [~build]}}}
+         "lein"    {:main hop.leiningen, :args [~task]}}}
