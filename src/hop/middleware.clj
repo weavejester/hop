@@ -19,3 +19,9 @@
 
 (defn global-build-options [build]
   (update build :tasks update-task-options (dissoc build :tasks)))
+
+(defn- replace-build-argument [task]
+  (update task :args (partial mapv #(if (= % '~build) (pr-str task) %))))
+
+(defn build-arguments [build]
+  (update build :tasks (partial map-vals replace-build-argument)))

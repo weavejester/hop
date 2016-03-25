@@ -15,7 +15,8 @@
   '[hop.middleware/source-paths
     hop.middleware/resource-paths
     hop.middleware/test-paths
-    hop.middleware/global-build-options])
+    hop.middleware/global-build-options
+    hop.middleware/build-arguments])
 
 (def default-jvm-opts
   ["-XX:+TieredCompilation"
