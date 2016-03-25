@@ -14,7 +14,8 @@
 (def default-middleware
   '[hop.middleware/source-paths
     hop.middleware/resource-paths
-    hop.middleware/test-paths])
+    hop.middleware/test-paths
+    hop.middleware/global-build-options])
 
 (def default-jvm-opts
   ["-XX:+TieredCompilation"
@@ -52,10 +53,6 @@
   (->> (concat (classpath-dirs build) (classpath-deps build))
        (str/join java.io.File/pathSeparator)))
 
-(defn tasks [build]
-  (for [[name task] (:tasks build)]
-    (meta-merge (dissoc build :tasks) {:name name} task)))
-
 (defn- arglist [args]
   (if (seq args)
     (str " " (str/join " " (map pr-str args)))
@@ -69,8 +66,8 @@
 
 (defn print-script [build]
   (println "case $1 in")
-  (doseq [task (tasks build)]
-    (println (str (:name task) ")"))
+  (doseq [[name task] (:tasks build)]
+    (println (str name ")"))
     (println "  shift")
     (println "  " (java-command task) "$@")
     (println "  ;;"))
