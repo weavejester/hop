@@ -1,6 +1,15 @@
 (ns hop.leiningen
   (:gen-class)
-  (:require [leiningen.version :as version]))
+  (:require [clojure.java.io :as io]
+            [leiningen.core.main :as main]
+            [leiningen.core.project :as project]))
 
-(defn -main [& args]
-  (version/version {:eval-in-leiningen true}))
+(defn- lein-project [build]
+  (-> build
+      (assoc :root (io/file "."), :plugins [], :eval-in-leiningen true)
+      (dissoc :directories, :main, :args :repositories)))
+
+(defn -main [build & args]
+  (let [project (project/init-project (lein-project (read-string build)))]
+    (main/resolve-and-apply project args)
+    (main/exit 0)))
