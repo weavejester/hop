@@ -11,17 +11,17 @@
 (defn global-build-options [build]
   (update-tasks build (partial meta-merge (dissoc build :middleware :tasks))))
 
-(defn- add-directories [build dirs]
-  (update build :directories (fnil into []) dirs))
+(defn- add-directories [task dirs]
+  (update task :directories (fnil into []) dirs))
 
 (defn source-paths [build]
-  (update-tasks build add-directories (:source-paths build)))
+  (update-tasks build #(add-directories % (:source-paths %))))
 
 (defn resource-paths [build]
-  (update-tasks build add-directories (:resource-paths build)))
+  (update-tasks build #(add-directories % (:resource-paths %))))
 
 (defn test-paths [build]
-  (update-tasks build add-directories (:test-paths build)))
+  (update-tasks build #(add-directories % (:test-paths %))))
 
 (defn- replace-build-arguments [build task]
   (let [mappings {'~build (pr-str build)
