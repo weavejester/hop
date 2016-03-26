@@ -29,10 +29,14 @@
     "describe" {:main hop.describe, :args [~build]}})
 
 (def default-build
-  {:repositories default-repositories
-   :middleware   default-middleware
-   :jvm-opts     default-jvm-opts
-   :tasks        default-tasks})
+  {:repositories   default-repositories
+   :middleware     default-middleware
+   :jvm-opts       default-jvm-opts
+   :tasks          default-tasks
+   :source-paths   ["src"]
+   :resource-paths ["resources"]
+   :test-paths     ["test"]
+   :compile-path   "target/classes"})
 
 (defn- absolute-path [path]
   (.getAbsolutePath (io/file path)))
