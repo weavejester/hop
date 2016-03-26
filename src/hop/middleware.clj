@@ -23,6 +23,14 @@
 (defn test-paths [build]
   (update-tasks build #(add-directories % (:test-paths %))))
 
+(defn compile-path [build]
+  (update-tasks
+   build
+   (fn [{path :compile-path :as task}]
+     (-> task
+         (update :directories (fnil conj []) path)
+         (update :jvm-opts (fnil conj []) (str "-Dclojure.compile.path=" path))))))
+
 (defn- replace-build-arguments [build task]
   (let [mappings {'~build (pr-str build)
                   '~task  (pr-str task)}]

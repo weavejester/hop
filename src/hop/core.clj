@@ -16,6 +16,7 @@
     hop.middleware/source-paths
     hop.middleware/resource-paths
     hop.middleware/test-paths
+    hop.middleware/compile-path
     hop.middleware/build-arguments])
 
 (def default-jvm-opts
