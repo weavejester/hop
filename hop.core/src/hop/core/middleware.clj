@@ -1,4 +1,4 @@
-(ns hop.middleware
+(ns hop.core.middleware
   (:require [meta-merge.core :refer [meta-merge]]
             [medley.core :refer [map-vals]]))
 

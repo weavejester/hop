@@ -1,4 +1,4 @@
-(ns hop.leiningen
+(ns hop.task.leiningen
   (:gen-class)
   (:require [clojure.java.io :as io]
             [leiningen.core.eval :as eval]

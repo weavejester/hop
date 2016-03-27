@@ -11,13 +11,16 @@
 (def default-repositories
   (merge aether/maven-central {"clojars" "http://clojars.org/repo"}))
 
+(def default-dependencies
+  '[[hop/hop.task "0.1.0-SNAPSHOT"]])
+
 (def default-middleware
-  '[hop.middleware/global-build-options
-    hop.middleware/source-paths
-    hop.middleware/resource-paths
-    hop.middleware/test-paths
-    hop.middleware/compile-path
-    hop.middleware/build-arguments])
+  '[hop.core.middleware/global-build-options
+    hop.core.middleware/source-paths
+    hop.core.middleware/resource-paths
+    hop.core.middleware/test-paths
+    hop.core.middleware/compile-path
+    hop.core.middleware/build-arguments])
 
 (def default-jvm-opts
   ["-XX:+TieredCompilation"
@@ -25,11 +28,12 @@
    "-XX:-OmitStackTraceInFastThrow"])
 
 (def default-tasks
-  '{"version" {:main hop.version}
-    "explain" {:main hop.explain, :args [~build]}})
+  '{"version" {:main hop.task.version}
+    "explain" {:main hop.task.explain, :args [~build]}})
 
 (def default-build
   {:repositories   default-repositories
+   :dependencies   default-dependencies
    :middleware     default-middleware
    :jvm-opts       default-jvm-opts
    :tasks          default-tasks

@@ -1,4 +1,4 @@
-(ns hop.explain
+(ns hop.task.explain
   (:gen-class)
   (:require [clojure.pprint :as pp]))
 

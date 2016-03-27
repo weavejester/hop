@@ -1,4 +1,4 @@
-(defproject hop "0.1.0-SNAPSHOT"
+(defproject hop/hop.core "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -6,8 +6,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [com.cemerick/pomegranate "0.3.0"]
                  [meta-merge "0.1.1"]
-                 [medley "0.7.3"]
-                 [leiningen "2.6.1"]]
+                 [medley "0.7.3"]]
   :main hop.core
   :uberjar-name "hop.jar"
   :profiles {:uberjar {:aot :all}})

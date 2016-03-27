@@ -1,4 +1,4 @@
-(ns hop.version
+(ns hop.task.version
   (:gen-class))
 
 (def version
