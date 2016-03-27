@@ -25,8 +25,8 @@
    "-XX:-OmitStackTraceInFastThrow"])
 
 (def default-tasks
-  '{"version"  {:main hop.version}
-    "describe" {:main hop.describe, :args [~build]}})
+  '{"version" {:main hop.version}
+    "explain" {:main hop.explain, :args [~build]}})
 
 (def default-build
   {:repositories   default-repositories
