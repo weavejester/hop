@@ -80,7 +80,7 @@
   (doseq [[name task] (:tasks build)]
     (println (str name ")"))
     (println "  shift")
-    (println "  " (java-command task) "$@")
+    (println "  exec" (java-command task) "$@")
     (println "  ;;"))
   (println "*)")
   (println "  echo \"No such task: $1\"")
