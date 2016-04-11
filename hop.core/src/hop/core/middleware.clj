@@ -1,5 +1,8 @@
 (ns hop.core.middleware
-  (:require [meta-merge.core :refer [meta-merge]]
+  (:require [cemerick.pomegranate.aether :as aether]
+            [clojure.java.io :as io]
+            [clojure.string :as str]
+            [meta-merge.core :refer [meta-merge]]
             [medley.core :refer [map-vals]]))
 
 (defn- update-tasks [build f & args]
@@ -38,3 +41,33 @@
 
 (defn build-arguments [build]
   (update build :tasks (partial map-vals (partial replace-build-arguments build))))
+
+(defn- absolute-path [path]
+  (.getAbsolutePath (io/file path)))
+
+(defn- classpath-dirs [{:keys [directories]}]
+  (map absolute-path directories))
+
+(def ^:private resolve-deps
+  (memoize
+   (fn [dependencies repositories]
+     (when dependencies
+       (aether/dependency-files
+        (aether/resolve-dependencies
+         :coordinates  dependencies
+         :repositories repositories))))))
+
+(defn- classpath-deps [{:keys [dependencies repositories]}]
+  (resolve-deps dependencies repositories))
+
+(defn classpath [build]
+  (->> (concat (classpath-dirs build) (classpath-deps build))
+       (str/join java.io.File/pathSeparator)))
+
+(defn- clojure-command [task]
+  `["$JAVA_CMD" ~@(:jvm-opts task)
+    "-cp" ~(classpath task)
+    "clojure.main" "-m" ~(:main task) ~@(:args task)])
+
+(defn clojure-tasks [build]
+  (update-tasks build #(assoc % :exec (clojure-command %))))

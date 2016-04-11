@@ -3,7 +3,6 @@
   (:require [cemerick.pomegranate :as pomegranate]
             [cemerick.pomegranate.aether :as aether]
             [clojure.string :as str]
-            [clojure.java.io :as io]
             [meta-merge.core :refer [meta-merge]]))
 
 (def buildfile "build.clj")
@@ -20,7 +19,8 @@
     hop.core.middleware/resource-paths
     hop.core.middleware/test-paths
     hop.core.middleware/compile-path
-    hop.core.middleware/build-arguments])
+    hop.core.middleware/build-arguments
+    hop.core.middleware/clojure-tasks])
 
 (def default-jvm-opts
   ["-XX:+TieredCompilation"
@@ -42,45 +42,15 @@
    :test-paths     ["test"]
    :compile-path   "target/classes"})
 
-(defn- absolute-path [path]
-  (.getAbsolutePath (io/file path)))
-
-(defn- classpath-dirs [{:keys [directories]}]
-  (map absolute-path directories))
-
-(def ^:private resolve-deps
-  (memoize
-   (fn [dependencies repositories]
-     (when dependencies
-       (aether/dependency-files
-        (aether/resolve-dependencies
-         :coordinates  dependencies
-         :repositories repositories))))))
-
-(defn- classpath-deps [{:keys [dependencies repositories]}]
-  (resolve-deps dependencies repositories))
-
-(defn classpath [build]
-  (->> (concat (classpath-dirs build) (classpath-deps build))
-       (str/join java.io.File/pathSeparator)))
-
-(defn- arglist [args]
-  (if (seq args)
-    (str " " (str/join " " (map pr-str args)))
-    ""))
-
-(defn- java-command [task]
-  (str "$JAVA_CMD " (str/join " " (:jvm-opts task))
-       " -cp " (pr-str (classpath task))
-       " clojure.main -m " (pr-str (:main task))
-       (arglist (:args task))))
+(defn- exec-command [task]
+  (str/join " " (map pr-str (:exec task))))
 
 (defn print-script [build]
   (println "case $1 in")
   (doseq [[name task] (:tasks build)]
     (println (str name ")"))
     (println "  shift")
-    (println "  exec" (java-command task) "$@")
+    (println "  exec" (exec-command task) "$@")
     (println "  ;;"))
   (println "*)")
   (println "  echo \"No such task: $1\"")
