@@ -37,7 +37,7 @@
 (defn- replace-build-arguments [build task]
   (let [mappings {'~build (pr-str build)
                   '~task  (pr-str task)}]
-    (update task :args (partial mapv #(mappings % %)))))
+    (update task :exec (partial mapv #(mappings % %)))))
 
 (defn build-arguments [build]
   (update build :tasks (partial map-vals (partial replace-build-arguments build))))

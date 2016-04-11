@@ -19,8 +19,8 @@
     hop.core.middleware/resource-paths
     hop.core.middleware/test-paths
     hop.core.middleware/compile-path
-    hop.core.middleware/build-arguments
-    hop.core.middleware/clojure-tasks])
+    hop.core.middleware/clojure-tasks
+    hop.core.middleware/build-arguments])
 
 (def default-jvm-opts
   ["-XX:+TieredCompilation"
