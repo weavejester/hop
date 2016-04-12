@@ -22,7 +22,7 @@ allows **middleware** functions to be declared that transform the
 build map. So a map of dependencies, source paths and other options
 can be turned into a single (and often very long) shell command.
 
-## Why's it (going to be) good?
+## Why's it good?
 
 Hop compiles into a shell script, so it has minimal overhead. This
 gives it a shorter startup time than Leiningen, once the cache is
@@ -39,6 +39,17 @@ other languages, such as Java or ClojureScript.
 
 Hop tasks can come from external dependencies, or from files in your
 project.
+
+## How do I contribute?
+
+Pick an [issue][]. Most issues should be tagged by how easy they are
+to implement.
+
+When writing a pull request, follow the [seven rules][] of writing a
+great git commit message.
+
+[issue]: https://github.com/weavejester/hop/issues
+[seven rules]: http://chris.beams.io/posts/git-commit/#seven-rules
 
 ## License
 
