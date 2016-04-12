@@ -70,4 +70,9 @@
     "clojure.main" "-m" ~(:main task) ~@(:args task)])
 
 (defn clojure-tasks [build]
-  (update-tasks build #(assoc % :exec (clojure-command %))))
+  (update-tasks
+   build
+   (fn [task]
+     (if-not (:exec task)
+       (assoc task :exec (clojure-command task))
+       task))))
