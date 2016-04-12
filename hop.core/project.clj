@@ -8,5 +8,4 @@
                  [meta-merge "0.1.1"]
                  [medley "0.7.3"]]
   :main hop.core
-  :uberjar-name "hop.jar"
   :profiles {:uberjar {:aot :all}})

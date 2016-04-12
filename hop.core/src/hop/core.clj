@@ -10,9 +10,6 @@
 (def default-repositories
   (merge aether/maven-central {"clojars" "http://clojars.org/repo"}))
 
-(def default-dependencies
-  '[[hop/hop.task "0.1.0-SNAPSHOT"]])
-
 (def default-middleware
   '[hop.core.middleware/global-build-options
     hop.core.middleware/source-paths
@@ -27,13 +24,23 @@
    "-XX:TieredStopAtLevel=1"
    "-XX:-OmitStackTraceInFastThrow"])
 
+(defn- hop-task [m]
+  (meta-merge '{:dependencies [[hop/hop.task "0.0.1"]]} m))
+
+(defn- lein-task [m]
+  (meta-merge '{:dependencies [[hop/hop.lein "0.0.1"]]
+                :main hop.task.leiningen
+                :args [~task]}
+              m))
+
 (def default-tasks
-  '{"version" {:main hop.task.version}
-    "explain" {:main hop.task.explain, :args [~build]}})
+  {"version" (hop-task '{:main hop.task.version})
+   "explain" (hop-task '{:main hop.task.explain, :args [~build]})
+   "uberjar" (lein-task '{:args ["uberjar"]})})
 
 (def default-build
   {:repositories   default-repositories
-   :dependencies   default-dependencies
+   :dependencies   []
    :middleware     default-middleware
    :jvm-opts       default-jvm-opts
    :tasks          default-tasks
