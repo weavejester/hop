@@ -9,11 +9,13 @@ INSTALL_PATH="$HOP_HOME/install"
 INSTALL_FILE="$INSTALL_PATH/hop.core-$VERSION-standalone.jar"
 INSTALL_URL="https://github.com/weavejester/hop/releases/download/$VERSION/hop.core-$VERSION-standalone.jar"
 
-if [ ! -f "$INSTALL_FILE" ]; then
+if [ -z "$HOP_JAR" -a ! -f "$INSTALL_FILE" ]; then
    echo Downloading jar file... 1>&2
    mkdir -p "$INSTALL_PATH"
    curl "$INSTALL_URL" > "$INSTALL_FILE"
 fi
+
+HOP_JAR="${HOP_JAR:-"$INSTALL_FILE"}"
 
 CACHE_PATH="$HOP_HOME/cache"
 CACHE_KEY=`shasum $BUILD_FILE | cut -f 1 -d ' '`
@@ -26,7 +28,7 @@ JAVA_CMD=${JAVA_CMD:-"java"}
 HOP_JVM_OPTS="${HOP_JVM_OPTS-"-XX:+TieredCompilation -XX:TieredStopAtLevel=1"}"
 
 if [ ! -f "$CACHE_FILE" ]; then
-    $JAVA_CMD $HOP_JVM_OPTS -jar "$INSTALL_FILE" > "$CACHE_FILE" || rm "$CACHE_FILE"
+    $JAVA_CMD $HOP_JVM_OPTS -jar "$HOP_JAR" > "$CACHE_FILE" || rm "$CACHE_FILE"
 fi
 
 if [ -f "$CACHE_FILE" ]; then
