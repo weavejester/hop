@@ -51,6 +51,31 @@ great git commit message.
 [issue]: https://github.com/weavejester/hop/issues
 [seven rules]: http://chris.beams.io/posts/git-commit/#seven-rules
 
+## Development setup
+
+Go into `hop.core` and compile an uberjar:
+
+```bash
+cd hop.core
+bin/hop uberjar
+```
+
+If `bin/hop uberjar` doesn't work, try falling back to using the
+standard `lein uberjar` instead.
+
+Once you have an uberjar, set the `HOP_JAR` environment variable. This
+will force Hop to use the jar you just creasted:
+
+```bash
+export HOP_JAR=target/hop.core-0.0.2-standalone.jar
+```
+
+When you make changes, be sure to clear the cache:
+
+```bash
+rm ~/.hop/cache/*.sh
+```
+
 ## License
 
 Copyright © 2016 James Reeves
