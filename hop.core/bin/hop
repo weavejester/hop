@@ -12,7 +12,7 @@ INSTALL_URL="https://github.com/weavejester/hop/releases/download/$VERSION/hop.c
 if [ -z "$HOP_JAR" -a ! -f "$INSTALL_FILE" ]; then
    echo Downloading jar file... 1>&2
    mkdir -p "$INSTALL_PATH"
-   curl "$INSTALL_URL" > "$INSTALL_FILE"
+   curl -L "$INSTALL_URL" > "$INSTALL_FILE"
 fi
 
 HOP_JAR="${HOP_JAR:-"$INSTALL_FILE"}"
