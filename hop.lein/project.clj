@@ -1,4 +1,4 @@
-(defproject hop/hop.lein "0.0.1"
+(defproject hop/hop.lein "0.0.2"
   :description "Leiningen integration task for Hop"
   :url "https://github.com/weavejester/hop"
   :license {:name "Eclipse Public License"

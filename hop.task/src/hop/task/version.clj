@@ -1,8 +1,7 @@
 (ns hop.task.version
   (:gen-class))
 
-(def version
-  "0.1.0-SNAPSHOT")
+(def version "0.0.2")
 
 (defn -main [& args]
   (println "Hop" version "on Java"

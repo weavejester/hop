@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=0.0.1
+VERSION=0.0.2
 BUILD_FILE="build.clj"
 
 HOP_HOME="${HOP_HOME:-"$HOME/.hop"}"

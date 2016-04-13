@@ -25,10 +25,10 @@
    "-XX:-OmitStackTraceInFastThrow"])
 
 (defn- hop-task [m]
-  (meta-merge '{:dependencies [[hop/hop.task "0.0.1"]]} m))
+  (meta-merge '{:dependencies [[hop/hop.task "0.0.2"]]} m))
 
 (defn- lein-task [m]
-  (meta-merge '{:dependencies [[hop/hop.lein "0.0.1"]]
+  (meta-merge '{:dependencies [[hop/hop.lein "0.0.2"]]
                 :main hop.task.leiningen
                 :args [~task]}
               m))

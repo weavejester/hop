@@ -1,4 +1,4 @@
-(defproject hop/hop.core "0.0.1"
+(defproject hop/hop.core "0.0.2"
   :description "An experimental declarative build tool"
   :url "https://github.com/weavejester/hop"
   :license {:name "Eclipse Public License"
